@@ -1,13 +1,13 @@
-package com.example.financial_tracker.ui.gallery
+package com.example.financial_tracker.ui.category
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class GalleryViewModel : ViewModel() {
+class CategoryViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is gallery Fragment"
+        value = "This is category Fragment"
     }
     val text: LiveData<String> = _text
 }
