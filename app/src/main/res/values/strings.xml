@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Financial_Tracker</string>
+    <string name="app_name">Bear Budget</string>
 
     <string name="menu_home">Главная</string>
     <string name="menu_chart">Графики</string>
