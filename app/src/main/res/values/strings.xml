@@ -5,4 +5,5 @@
     <string name="menu_chart">Графики</string>
     <string name="menu_category">Категории</string>
     <string name="menu_settings">Настройки</string>
+    <string name="menu_add_operation">Добавьте операцию</string>
 </resources>
