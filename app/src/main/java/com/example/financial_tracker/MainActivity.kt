@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Изменение цвета панели состояния (там где % зарядки, уровень сигнала, время и тп)
-        window.statusBarColor = resources.getColor(R.color.green_200, this.theme)
+        window.statusBarColor = resources.getColor(R.color.green_700, this.theme)
 
         super.onCreate(savedInstanceState)
 

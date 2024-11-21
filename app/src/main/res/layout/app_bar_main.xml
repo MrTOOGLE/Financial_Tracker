@@ -15,7 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/green_200"
+            android:background="@color/green_700"
             app:popupTheme="@style/Theme.Financial_Tracker.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>

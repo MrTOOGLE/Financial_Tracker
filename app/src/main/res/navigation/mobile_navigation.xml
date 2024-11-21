@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/add_operation_fragment"
-        android:name="com.example.financial_tracker.ui.AddOperationFragment"
+        android:name="com.example.financial_tracker.ui.addOperation.AddOperationFragment"
         android:label="@string/menu_add_operation"
         tools:layout="@layout/fragment_add_operation" />
 
@@ -32,7 +32,18 @@
         android:id="@+id/nav_category"
         android:name="com.example.financial_tracker.ui.category.CategoryFragment"
         android:label="@string/menu_category"
-        tools:layout="@layout/fragment_category" />
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_create_new_category"
+            app:destination="@+id/create_new_category" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/create_new_category"
+        android:name="com.example.financial_tracker.ui.addCategory.AddCategoryFragment"
+        android:label="@string/menu_create_category"
+        tools:layout="@layout/fragment_add_category" />
 
     <fragment
         android:id="@+id/nav_settings"

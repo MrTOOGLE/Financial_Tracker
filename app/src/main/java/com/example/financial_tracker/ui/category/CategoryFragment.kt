@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.financial_tracker.R
 import com.example.financial_tracker.databinding.FragmentCategoryBinding
 
 class CategoryFragment : Fragment() {
@@ -22,16 +24,13 @@ class CategoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val categoryViewModel =
-            ViewModelProvider(this).get(CategoryViewModel::class.java)
-
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textCategory
-        categoryViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        binding.createCategoryBtn.setOnClickListener {
+            findNavController().navigate(R.id.create_new_category)
         }
+
         return root
     }
 
