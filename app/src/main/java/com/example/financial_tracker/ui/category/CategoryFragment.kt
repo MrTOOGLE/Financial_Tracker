@@ -30,6 +30,9 @@ class CategoryFragment : Fragment() {
         binding.createCategoryBtn.setOnClickListener {
             findNavController().navigate(R.id.create_new_category)
         }
+        binding.deleteCategoryBtn.setOnClickListener {
+            findNavController().navigate(R.id.delete_category)
+        }
 
         return root
     }

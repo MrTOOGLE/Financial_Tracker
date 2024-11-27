@@ -7,20 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import android.widget.ToggleButton
 import com.example.financial_tracker.R
-
+import com.example.financial_tracker.saves.Category
+import com.example.financial_tracker.saves.writeCategory
 
 class AddCategoryFragment : Fragment() {
     private lateinit var categoryName: EditText
     private lateinit var categoryType: ToggleButton
     private lateinit var saveBtn: Button
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?
@@ -32,10 +28,13 @@ class AddCategoryFragment : Fragment() {
 
         saveBtn.setOnClickListener {
             if (categoryName.text.isNotEmpty()) {
-                //TODO - обработать чо там дальше
+                val name: String = categoryName.text.toString()
+                val type: String = categoryType.text.toString()
+                // Добавляем название файла "/categories.csv"
+                writeCategory(context?.filesDir.toString() + "/categories.csv", Category(name, type, false))
+                Toast.makeText(context, "Категория была добавлена", Toast.LENGTH_SHORT).show()
             }
         }
-
         return root
     }
 }

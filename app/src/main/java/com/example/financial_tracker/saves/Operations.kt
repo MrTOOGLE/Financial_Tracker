@@ -12,11 +12,21 @@ data class Operation(val id: String, val date: String, val amount: Double,
                      val categoryName: String, val type: OperationType, val comment: String?)
 
 /**
+ * Функция для проверки сущесвтования указанного пути и его создания в протвном случае
+ */
+private fun checkFile(file: File) {
+    if (!file.exists()) {
+        file.createNewFile()
+    }
+}
+
+/**
  * Функция для записи операции в файл (csv)
  **/
 fun writeOperation(filePath: String, operation: Operation) {
     // TODO - сделать проверку name, чтобы не было строки
     val file = File(filePath)
+    checkFile(file)
     file.parentFile?.mkdirs()
     var id: String = UUID.randomUUID().toString() // для генерации неповторимого id
     BufferedWriter(FileWriter(file, true)).use { writer ->
@@ -30,6 +40,7 @@ fun writeOperation(filePath: String, operation: Operation) {
  **/
 fun readOperations(filePath: String, operationType: OperationType? = null): List<Operation> {
     val file = File(filePath)
+    checkFile(file)
     val operations = mutableListOf<Operation>()
 
     file.bufferedReader().useLines { lines ->
@@ -58,6 +69,7 @@ fun readOperations(filePath: String, operationType: OperationType? = null): List
  **/
 fun findOperation(filePath: String, idOperation: String): Operation? {
     val file = File(filePath)
+    checkFile(file)
 
     file.bufferedReader().useLines { lines ->
         lines.forEach { line ->
@@ -82,6 +94,7 @@ fun findOperation(filePath: String, idOperation: String): Operation? {
  **/
 fun updateOperation(filePath: String, updatedOperation: Operation) {
     val file = File(filePath)
+    checkFile(file)
     val operations = readOperations(filePath).map { operation ->
         if (operation.id == updatedOperation.id) updatedOperation else operation
     }
@@ -98,6 +111,7 @@ fun updateOperation(filePath: String, updatedOperation: Operation) {
  **/
 fun deleteOperation(filePath: String, idOperation: String) {
     val file = File(filePath)
+    checkFile(file)
     val operations = readOperations(filePath).filter {
         it.id != idOperation
     }

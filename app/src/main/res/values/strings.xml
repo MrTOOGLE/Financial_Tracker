@@ -5,15 +5,19 @@
     <string name="menu_chart">Графики</string>
     <string name="menu_settings">Настройки</string>
     <string name="menu_add_operation">Добавьте операцию</string>
-
     <string name="menu_category">Категории</string>
-    <string name="button_add_category">Добавить категорию</string>
-    <string name="button_income">Доходы</string>
-    <string name="button_expenses">Расходы</string>
-    <string name="add_category_hint">Введите название категории</string>
     <string name="menu_create_category">Создать категорию</string>
 
+    <string name="button_income">Доходы</string>
+    <string name="button_expenses">Расходы</string>
+
     <string name="save">Сохранить</string>
+
+    <string name="enter_category_name">Введите название категории</string>
     <string name="choose_category_type">Выберите тип категории</string>
+    <string name="enter_sum">Введите сумму</string>
+    <string name="choose_category">Выберите категорию</string>
+    <string name="button_add_category">Добавить категорию</string>
+    <string name="delete_category">Удалить категорию</string>
 
 </resources>

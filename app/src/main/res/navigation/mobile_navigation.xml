@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_create_new_category"
             app:destination="@+id/create_new_category" />
+        <action
+            android:id="@+id/action_delete_category"
+            app:destination="@+id/delete_new_category" />
 
     </fragment>
 
@@ -44,6 +47,12 @@
         android:name="com.example.financial_tracker.ui.addCategory.AddCategoryFragment"
         android:label="@string/menu_create_category"
         tools:layout="@layout/fragment_add_category" />
+
+    <fragment
+        android:id="@+id/delete_category"
+        android:name="com.example.financial_tracker.ui.deleteCategory.DeleteCategoryFragment"
+        android:label="@string/delete_category"
+        tools:layout="@layout/fragment_delete_category" />
 
     <fragment
         android:id="@+id/nav_settings"
