@@ -63,7 +63,7 @@ fun findCategory(filePath: String, categoryName: String): Category? {
     file.bufferedReader().useLines { lines ->
         lines.forEach { line ->
             val fields = line.split(",")
-            if (fields.size >= 3 && fields[0] == categoryName) {
+            if (fields.size >= 3 && fields[0].lowercase() == categoryName.lowercase()) {
                 return Category(
                     name = fields[0],
                     type = fields[1],

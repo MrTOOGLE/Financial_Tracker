@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.financial_tracker.R
 
+/**
+ * Фрагмент для добавления расходов/доходов
+ */
 class AddOperationFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

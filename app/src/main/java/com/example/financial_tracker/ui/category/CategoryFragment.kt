@@ -11,6 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.financial_tracker.R
 import com.example.financial_tracker.databinding.FragmentCategoryBinding
 
+/**
+ * Фрагмент для управления категориями
+ */
 class CategoryFragment : Fragment() {
 
     private var _binding: FragmentCategoryBinding? = null
@@ -27,6 +30,7 @@ class CategoryFragment : Fragment() {
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        // Переходим по нажатиям конопок к другим фрагментам (добавить/удалить категорию)
         binding.createCategoryBtn.setOnClickListener {
             findNavController().navigate(R.id.create_new_category)
         }

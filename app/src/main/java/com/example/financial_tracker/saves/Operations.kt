@@ -74,7 +74,7 @@ fun findOperation(filePath: String, idOperation: String): Operation? {
     file.bufferedReader().useLines { lines ->
         lines.forEach { line ->
             val fields = line.split(",")
-            if (fields.size >= 5 && fields[0] == idOperation) {
+            if (fields.size >= 5 && fields[0].lowercase() == idOperation.lowercase()) {
                 return Operation(
                     id = fields[0],
                     date = fields[1],

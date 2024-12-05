@@ -11,8 +11,12 @@ import android.widget.Toast
 import android.widget.ToggleButton
 import com.example.financial_tracker.R
 import com.example.financial_tracker.saves.Category
+import com.example.financial_tracker.saves.findCategory
 import com.example.financial_tracker.saves.writeCategory
 
+/**
+ * Фрагмент для добавления новых категорий пользователя
+ */
 class AddCategoryFragment : Fragment() {
     private lateinit var categoryName: EditText
     private lateinit var categoryType: ToggleButton
@@ -26,13 +30,22 @@ class AddCategoryFragment : Fragment() {
         categoryType = root.findViewById(R.id.toggleButtonCategory)
         saveBtn = root.findViewById(R.id.buttonCategory)
 
+        // Добавляем название файла "/categories.csv"
+        val path: String = context?.filesDir.toString() + "/categories.csv"
+
+        // Сохраняем новую категорию, созданную пользователем
         saveBtn.setOnClickListener {
             if (categoryName.text.isNotEmpty()) {
-                val name: String = categoryName.text.toString()
-                val type: String = categoryType.text.toString()
-                // Добавляем название файла "/categories.csv"
-                writeCategory(context?.filesDir.toString() + "/categories.csv", Category(name, type, false))
-                Toast.makeText(context, "Категория была добавлена", Toast.LENGTH_SHORT).show()
+                if (findCategory(path, categoryName.text.toString()) == null) {
+                    val name: String = categoryName.text.toString()
+                    val type: String = categoryType.text.toString()
+                    writeCategory(path, Category(name, type, false))
+                    Toast.makeText(context, "Категория создана", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Такая категория уже существует", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(context, "Введите название категории", Toast.LENGTH_SHORT).show()
             }
         }
         return root

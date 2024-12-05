@@ -11,6 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.financial_tracker.R
 import com.example.financial_tracker.databinding.FragmentHomeBinding
 
+/**
+ * Фрагмент "главной станицы", где пользователь видит основную ифнормачию о своих операциях
+ */
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
