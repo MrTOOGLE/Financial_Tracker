@@ -1,8 +1,16 @@
 package com.example.financial_tracker.saves
+import android.annotation.SuppressLint
+import android.icu.text.SimpleDateFormat
+import android.util.Log
 import java.io.File
 import java.io.FileWriter
 import java.io.BufferedWriter
 import java.util.UUID
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.util.Calendar
+import java.util.Date
 
 enum class OperationType {
     INCOME, EXPENSE
@@ -21,16 +29,16 @@ private fun checkFile(file: File) {
 }
 
 /**
- * Функция для записи операции в файл (csv)
+ * Функция для записи операции в файл (csv), id генерируется сам!!!!!!
  **/
 fun writeOperation(filePath: String, operation: Operation) {
-    // TODO - сделать проверку name, чтобы не было строки
+    // TODO - сделать проверку комментария, чтобы не было строки
     val file = File(filePath)
     checkFile(file)
     file.parentFile?.mkdirs()
-    var id: String = UUID.randomUUID().toString() // для генерации неповторимого id
+    val id: String = UUID.randomUUID().toString() // для генерации неповторимого id
     BufferedWriter(FileWriter(file, true)).use { writer ->
-        writer.write("${operation.id},${operation.date},${operation.amount},${operation.categoryName},${operation.type},${operation.comment ?: ""}")
+        writer.write("${id},${operation.date},${operation.amount},${operation.categoryName},${operation.type},${operation.comment ?: ""}")
         writer.newLine()
     }
 }
@@ -57,6 +65,41 @@ fun readOperations(filePath: String, operationType: OperationType? = null): List
                 )
                 if (operationType == null || operation.type == operationType) {
                     operations.add(operation)
+                }
+            }
+        }
+    }
+    return operations
+}
+
+@SuppressLint("SimpleDateFormat")
+fun readOperationsForWeek(filePath: String, operationType: OperationType? = null): List<Operation> {
+    val file = File(filePath)
+    checkFile(file)
+    val operations = mutableListOf<Operation>()
+
+    // Получаем дату неделю назад
+    val dateFormat = SimpleDateFormat("dd/M/yyyy")
+    val calendar: Calendar = Calendar.getInstance()
+    calendar.add(Calendar.DAY_OF_YEAR, -7)
+    val sevenDaysAgo: String = dateFormat.format(calendar.time).toString()
+
+    file.bufferedReader().useLines { lines ->
+        lines.forEach { line ->
+            val fields = line.split(",")
+            if (fields.size >= 5) {
+                val operation = Operation(
+                    id = fields[0],
+                    date = fields[1],
+                    amount = fields[2].toDouble(),
+                    categoryName = fields[3],
+                    type = OperationType.valueOf(fields[4]),
+                    comment = if (fields.size > 5) fields[5] else null
+                )
+                if (operationType == null || operation.type == operationType) {
+                    if (dateFormat.parse(operation.date) >= dateFormat.parse(sevenDaysAgo)) {
+                        operations.add(operation)
+                    }
                 }
             }
         }
