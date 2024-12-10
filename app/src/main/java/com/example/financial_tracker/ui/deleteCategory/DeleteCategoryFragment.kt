@@ -34,7 +34,7 @@ class DeleteCategoryFragment : Fragment() {
         // Отображение категорий по типу: доходы/расходы для дальнейшего удаления выбранной категории
         toggleBtn.setOnClickListener {
             val categories = readCategories(context?.filesDir.toString() + "/categories.csv")
-            if (toggleBtn.text.toString() == getString(R.string.button_income)) {
+            if (toggleBtn.isChecked) {
                 val incomeCategory = categories
                     .filter { it.type.contains(getString(R.string.button_income), ignoreCase = true) }
                     .map { it.name }

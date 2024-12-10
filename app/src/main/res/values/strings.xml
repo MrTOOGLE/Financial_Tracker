@@ -19,5 +19,7 @@
     <string name="choose_category">Выберите категорию</string>
     <string name="button_add_category">Добавить категорию</string>
     <string name="delete_category">Удалить категорию</string>
+    <string name="weekOperations">Операции за эту неделю</string>
+    <string name="plus">+</string>
 
 </resources>

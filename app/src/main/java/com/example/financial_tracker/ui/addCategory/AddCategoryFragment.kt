@@ -48,6 +48,10 @@ class AddCategoryFragment : Fragment() {
                 Toast.makeText(context, "Введите название категории", Toast.LENGTH_SHORT).show()
             }
         }
+
+        // Показ доходов по умолчанию
+        categoryType.performClick()
+
         return root
     }
 }

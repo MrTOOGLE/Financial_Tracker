@@ -78,11 +78,18 @@ fun readOperationsForWeek(filePath: String, operationType: OperationType? = null
     checkFile(file)
     val operations = mutableListOf<Operation>()
 
-    // Получаем дату неделю назад
+    // Получаем первый (понедельник) и последний (воскресенье) день текущей недели
+    val calendar = Calendar.getInstance()
+    calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+    val firstDayOfWeek = SimpleDateFormat("dd/M/yyyy").format(calendar.time)
+
+    calendar.add(Calendar.DAY_OF_WEEK, 6)
+    val lastDayOfWeek = SimpleDateFormat("dd/M/yyyy").format(calendar.time)
+
     val dateFormat = SimpleDateFormat("dd/M/yyyy")
-    val calendar: Calendar = Calendar.getInstance()
-    calendar.add(Calendar.DAY_OF_YEAR, -7)
-    val sevenDaysAgo: String = dateFormat.format(calendar.time).toString()
+    val firstDate = dateFormat.parse(firstDayOfWeek)
+    val lastDate = dateFormat.parse(lastDayOfWeek)
+
 
     file.bufferedReader().useLines { lines ->
         lines.forEach { line ->
@@ -96,8 +103,10 @@ fun readOperationsForWeek(filePath: String, operationType: OperationType? = null
                     type = OperationType.valueOf(fields[4]),
                     comment = if (fields.size > 5) fields[5] else null
                 )
+                val operationDate = dateFormat.parse(operation.date)
+
                 if (operationType == null || operation.type == operationType) {
-                    if (dateFormat.parse(operation.date) >= dateFormat.parse(sevenDaysAgo)) {
+                    if (operationDate in firstDate..lastDate) {
                         operations.add(operation)
                     }
                 }

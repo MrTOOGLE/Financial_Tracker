@@ -2,9 +2,7 @@ package com.example.financial_tracker.ui.addOperation
 
 import android.annotation.SuppressLint
 import android.icu.text.SimpleDateFormat
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -45,7 +43,7 @@ class AddOperationFragment : Fragment() {
         // Отображение категорий по типу: доходы/расходы для дальнейшего удаления выбранной категории
         toggleBtn.setOnClickListener {
             val categories = readCategories(context?.filesDir.toString() + "/categories.csv")
-            if (toggleBtn.text.toString() == getString(R.string.button_income)) {
+            if (toggleBtn.isChecked) {
                 val incomeCategory = categories
                     .filter { it.type.contains(getString(R.string.button_income), ignoreCase = true) }
                     .map { it.name }

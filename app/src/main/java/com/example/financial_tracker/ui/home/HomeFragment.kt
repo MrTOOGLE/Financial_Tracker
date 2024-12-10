@@ -15,9 +15,11 @@ import com.example.financial_tracker.saves.Operation
 import com.example.financial_tracker.saves.OperationType
 import com.example.financial_tracker.saves.readOperationsForWeek
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.ValueFormatter
 
 
 /**
@@ -46,7 +48,7 @@ class HomeFragment : Fragment() {
 
         toggleBtn.setOnClickListener {
             val operations: List<Operation> =
-                if (toggleBtn.text.toString() == getString(R.string.button_income)) {
+                if (toggleBtn.isChecked) {
                     readOperationsForWeek(path, OperationType.INCOME)
                 } else {
                     readOperationsForWeek(path, OperationType.EXPENSE)
@@ -54,8 +56,6 @@ class HomeFragment : Fragment() {
 
             // Получаем словарь: {категория} - {сумма всех операций по этой категории}
             val result: Map<String, Double> = operations.groupBy({it.categoryName}, {it.amount}).mapValues { it.value.sum() }
-            Log.e("TAG", result.toString())
-
             showData(result)
         }
 
@@ -75,38 +75,37 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
+    /**
+     * Функция для работы с круговой диаграммой
+     */
     private fun showData(data: Map<String, Double>) {
         // Подготовка данных для диаграммы
         val entries = data.map { (label, value) ->
-            PieEntry(value.toFloat(), label)
+            PieEntry(value.toFloat(), label) // Метка для легенды
         }
         val totalSum = data.values.sum()
+        // Округление суммы до двух знаков
+        val roundedTotalSum = String.format("%.0f", totalSum)
 
         // Создание набора данных
         val dataSet = PieDataSet(entries, "").apply {
             // Настройка цветов
-            colors = listOf(
-                Color.rgb(55, 81, 126),   // Темно-синий
-                Color.rgb(70, 132, 95),   // Темно-зеленый
-                Color.rgb(159, 53, 53),   // Темно-красный
-                Color.rgb(124, 85, 46),   // Темно-коричневый
-                Color.rgb(95, 47, 104),   // Темно-фиолетовый
-                Color.rgb(36, 123, 160),  // Темно-бирюзовый
-                Color.rgb(75, 75, 75)     // Темно-серый
-            )
-            // Отступ между секторами
-            sliceSpace = 3f
-            // Процент выделения при касании
-            selectionShift = 5f
-
-            setDrawValues(true)
-            valueTextSize = 16f
-            valueTextColor = Color.WHITE
+            colors = generateColors(entries.size)
+            sliceSpace = 3f // Отступ между секторами
+            selectionShift = 5f // Процент выделения при касании
+            setDrawValues(true) // Отображение значений на диаграмме
+            valueTextSize = 12f // Размер текста значений
+            valueTextColor = Color.WHITE // Цвет текста значений
         }
 
         // Создание объекта данных
-        val pieData = PieData(dataSet).apply {
-            // Настройка текста значений
+        val pieData: PieData = PieData(dataSet).apply {
+            setValueFormatter(object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    // Форматирование значений: оставить только целые числа
+                    return String.format("%.1f", value)
+                }
+            })
             setValueTextSize(12f)
             setValueTextColor(Color.WHITE)
         }
@@ -116,19 +115,44 @@ class HomeFragment : Fragment() {
             this.data = pieData
 
             // Базовые настройки
-            setUsePercentValues(true)
+            setUsePercentValues(false) // Оставить абсолютные значения
             description.isEnabled = false
-            // Центральный текст - общая сумма
-            centerText = "$totalSum"
+            centerText = roundedTotalSum // Центральный текст - округленная сумма
             setCenterTextColor(Color.WHITE)
-            setCenterTextSize(24f)
+            setCenterTextSize(20f)
+            setDrawEntryLabels(false) // Отключить подписи категорий на диаграмме
+
+            pieChart.setHoleColor(Color.BLACK) // Цвет центральной области
+            setTransparentCircleColor(Color.BLACK) // Цвет "бублика"
+            setTransparentCircleAlpha(175) // Прозрачность (0-255)
 
             // Анимация при появлении
             animateY(1000)
+
             // Легенда
-            legend.isEnabled = true
-            // Поворот диаграммы
-            isRotationEnabled = true
+            legend.apply {
+                isEnabled = true // Включить легенду
+                verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+                horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+                isWordWrapEnabled = true
+                orientation = Legend.LegendOrientation.HORIZONTAL
+                textColor = Color.WHITE
+                textSize = 16f
+            }
+            isRotationEnabled = true // Включить поворот диаграммы
         }
+    }
+
+    /**
+     * Функция для генерации нужного кол-ва цветов для диаграммы
+     */
+    private fun generateColors(count: Int): List<Int> {
+        val colors = mutableListOf<Int>()
+        val hueStep = 360 / count // Шаг по цветовому кругу
+        for (i in 0 until count) {
+            val hue = (i * hueStep) % 360 // Угол на цветовом круге
+            colors.add(Color.HSVToColor(floatArrayOf(hue.toFloat(), 0.7f, 0.6f))) // HSV: насыщенность и яркость
+        }
+        return colors
     }
 }
