@@ -56,7 +56,6 @@ class HomeFragment : Fragment() {
 
             // Получаем словарь: {категория} - {сумма всех операций по этой категории}
             val result: Map<String, Double> = operations.groupBy({it.categoryName}, {it.amount}).mapValues { it.value.sum() }
-            // TODO - переделать чтобы был пустой график
             try {
                 showData(result)
             } catch (e: Exception) {
