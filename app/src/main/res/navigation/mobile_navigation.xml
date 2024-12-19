@@ -38,7 +38,7 @@
             app:destination="@+id/create_new_category" />
         <action
             android:id="@+id/action_delete_category"
-            app:destination="@+id/delete_new_category" />
+            app:destination="@+id/delete_category" />
 
     </fragment>
 

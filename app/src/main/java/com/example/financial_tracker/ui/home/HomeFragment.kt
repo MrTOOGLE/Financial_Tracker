@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.financial_tracker.R
 import com.example.financial_tracker.databinding.FragmentHomeBinding
-import android.util.Log
+import android.widget.Toast
 import android.widget.ToggleButton
 import com.example.financial_tracker.saves.Operation
 import com.example.financial_tracker.saves.OperationType
@@ -56,7 +56,11 @@ class HomeFragment : Fragment() {
 
             // Получаем словарь: {категория} - {сумма всех операций по этой категории}
             val result: Map<String, Double> = operations.groupBy({it.categoryName}, {it.amount}).mapValues { it.value.sum() }
-            showData(result)
+            try {
+                showData(result)
+            } catch (e: Exception) {
+                Toast.makeText(context, "Нет данных для графика", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Показ доходов по умолчанию
