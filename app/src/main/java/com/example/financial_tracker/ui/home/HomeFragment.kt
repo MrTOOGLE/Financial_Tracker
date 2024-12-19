@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.financial_tracker.R
 import com.example.financial_tracker.databinding.FragmentHomeBinding
-import android.util.Log
 import android.widget.Toast
 import android.widget.ToggleButton
 import com.example.financial_tracker.saves.Operation
@@ -57,6 +56,7 @@ class HomeFragment : Fragment() {
 
             // Получаем словарь: {категория} - {сумма всех операций по этой категории}
             val result: Map<String, Double> = operations.groupBy({it.categoryName}, {it.amount}).mapValues { it.value.sum() }
+            // TODO - переделать чтобы был пустой график
             try {
                 showData(result)
             } catch (e: Exception) {
